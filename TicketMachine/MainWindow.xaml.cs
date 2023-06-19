@@ -25,13 +25,10 @@ namespace TicketMachine
     /// </summary>
     public partial class MainWindow : Window
     {
-        private PrintDialog printDialog;
-
         public MainWindow()
         {
             InitializeComponent();
             code_input_box.Focus();
-            printDialog = new PrintDialog();
         }
 
         private void code_input_box_KeyUp(object sender, KeyEventArgs e)
