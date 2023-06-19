@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO.Packaging;
 using System.Linq;
 using System.Printing;
@@ -25,10 +26,23 @@ namespace TicketMachine
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string printerName;
+
         public MainWindow()
         {
             InitializeComponent();
             code_input_box.Focus();
+
+            var printerName = ConfigurationManager.AppSettings["PrinterName"];
+            if (printerName != null)
+            {
+                this.printerName = printerName;
+            }
+            else
+            {
+                throw new NullReferenceException("PrinterName can not be null.");
+            }
+
         }
 
         private void code_input_box_KeyUp(object sender, KeyEventArgs e)
@@ -44,7 +58,6 @@ namespace TicketMachine
         /// <exception cref="System.Printing.PrintQueueException">Exception is thrown if no printer with the specified name is found</exception>
         private void do_print_stuff(string text)
         {
-            string printerName = "POS-80";
             var printQueue = new LocalPrintServer().GetPrintQueue(printerName);
 
             PrintCapabilities printCapabilities = printQueue.GetPrintCapabilities();
